@@ -1,4 +1,5 @@
 const {request, response} = require('express')
+const Usuario = require('../models/usuario')
 
 const usuariosGet = (req=request , res=response)=>{
     const {limit,page} = req.query
@@ -9,12 +10,16 @@ const usuariosGet = (req=request , res=response)=>{
     })
 }
 
-const usuariosPost = (req=request , res)=>{
-    const {nombre, correo} = req.body
-    res.json({
-        message: "POST usuarios-controllers",
-        nombre,
-        correo,
+const usuariosPost = async (req=request, res)=>{
+    const {name, email, password} = req.body
+
+    const usuario=new Usuario({name, email, password})
+        
+    await usuario.save()
+
+    res.status(201).json({
+        message: "Usuario creado",
+        usuario,
     })
 }
 
