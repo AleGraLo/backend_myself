@@ -7,6 +7,7 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
         this.usuariosPath = '/api/usuarios'
+        this.roomsPath = '/api/rooms'
         this.conectarDB();
         this.middlewares();
         this.routes(); // Llama a la función routes en el constructor
