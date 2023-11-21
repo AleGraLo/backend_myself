@@ -6,7 +6,6 @@ const RoomSchema=Schema({
     required:[true,'el numero de habitacion es obligatorio']
 
   },
-
   type: {
     type:String,
     enum:["SIMPLE","DOBLE","BUNGALOW_FAMILIAR"],
@@ -25,5 +24,11 @@ const RoomSchema=Schema({
   },
 
 });
+
+RoomSchema.methods.toJSON = function () {
+  const { __v, _id, ...room } = this.toObject();
+  room.rid = _id;
+  return room;
+};
 
 module.exports = model('Room', RoomSchema);

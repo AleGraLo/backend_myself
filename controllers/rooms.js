@@ -15,20 +15,11 @@ const roomsPost = async (req = request, res = response) => {
 
   const room = new Room({ number, type, price, availability, photo }); 
   
-  try {
-    await room.save();
-    res.status(201).json({
-      message: 'Habitación creada',
+  res.status(201).json({
+      message: "Habitacion creado",
       room,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: 'Error al crear habitación',
-      error: error.message,
-    });
-  }
-};
+  });
+}
 
 const roomsPut = (req = request, res = response) => {
   const { id } = req.params;
