@@ -9,17 +9,17 @@ const router = Router()
     router.get('/', usuariosGet) 
     
     router.post('/',
-        [
-        check("name","El nombre es obligatorio").notEmpty(), 
-        check("password", "la contraseña debe tener más de 6 caracteres").isLength
-        ({
-            min: 6,
-        }),
-        check("email","El email no es valido").isEmail(),
-        // check("role","No es un rol válido").isIn(["USER_ROLE","ADMIN_ROLE"])
-        check("role").custom(esRoleValido),
-        validarCampos,
-        ],
+        // [
+        // check("name","El nombre es obligatorio").notEmpty(), 
+        // check("password", "la contraseña debe tener más de 6 caracteres").isLength
+        // ({
+        //     min: 6,
+        // }),
+        // check("email","El email no es valido").isEmail(),
+        // // check("role","No es un rol válido").isIn(["USER_ROLE","ADMIN_ROLE"])
+        // check("role").custom(esRoleValido),
+        // validarCampos,
+        // ],
         usuariosPost
         ) 
 

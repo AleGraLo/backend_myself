@@ -11,10 +11,22 @@ const roomsGet = (req = request, res = response) => {
 };
 
 const roomsPost = async (req = request, res = response) => {
+  const tipos= ["SIMPLE","DOBLE","BUNGALOW_FAMILIAR"]
+
   const { number, type, price, availability, photo } = req.body;
 
-  const room = new Room({ number, type, price, availability, photo }); 
+  //await
+
+  if(!tipos.includes(type.toUpperCase())){
+    return res.status(401).json({
+      msg:`El tipo de habitación no pertenece a ${tipos}`
+    })
+  }
+  const tipo=type.toUpperCase()
+  const room = new Room({ number,type:tipo, price, availability, photo }); 
   
+  await room.save()
+
   res.status(201).json({
       message: "Habitacion creado",
       room,
