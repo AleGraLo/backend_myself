@@ -1,30 +1,29 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose')
 
-const roomSchema = new mongoose.Schema({
-  roomNumber: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
-  roomType: {
+const RoomSchema=Schema({
+  number: {
     type: String,
-    required: true,
+    required:[true,'el numero de habitacion es obligatorio']
+
   },
-  pricePerNight: {
-    type: Number,
-    required: true,
+
+  type: {
+    type:String,
+    enum:["SIMPLE","DOBLE","BUNGALOW_FAMILIAR"],
+  },
+  price: {
+    type: String,
+    required:[true],
   },
   availability: {
     type: Boolean,
     default: true,
   },
-  photoURL: {
+  photo: {
     type: String,
-    required: true,
+    required: [true],
   },
-  // Puedes añadir más campos según las necesidades (por ejemplo, disponibilidad en fechas específicas)
+
 });
 
-const Room = mongoose.model('Room', roomSchema);
-
-module.exports = Room;
+module.exports = model('Room', RoomSchema);
