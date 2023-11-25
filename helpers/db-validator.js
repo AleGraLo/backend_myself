@@ -8,15 +8,27 @@ const esRoleValido = async (role="USER_ROLE") => {
   }
 };
 
-const roomIs= async(number)=>{
-  const isRoom = await Room.findOne({number})
-  if (isRoom) {
-      throw new Error(`La habitación ${number} ya está registrada en la BD`)
+  //validar si numero habitación ya existe
+  const existeRoom = async (number)=>{
+    const existeRoom = await Room.findOne({number})
+    if (existeRoom){
+      throw new Error(`La habitación ${number} ya existe en la BD.`)
     }
   }
 
+  //validar si habitación ya existe
+  const existeRoomPorId = async (id)=>{
+    const existeRoom = await Room.findById(id)
+    if (!existeRoom
+      ){
+      throw new Error(`El id No existe en la BD.`)
+    }
+  }
+
+  
 
 module.exports = {
   esRoleValido,
-  roomIs,
+  existeRoom,
+  existeRoomPorId
 };

@@ -1,21 +1,27 @@
 const { request, response } = require('express');
 const Room = require('../models/rooms'); 
 
-const roomsGet = (req = request, res = response) => {
-  const { limit, page } = req.query;
-  res.json({
-    message: 'GET rooms-controllers',
-    limit,
-    page,
+const roomsGet = async(req = request, res = response) => {
+  const { limite=5, desde=0 } = req.query;
+
+  //promise.all()agrupar promesas
+
+  const [total, room] = await Promise.all([
+    Room.countDocuments({availability:true}),
+    Room.find({availability:true}).limit(limite).skip(desde)  
+  ])
+
+  res.status(200).json({
+    total,
+    room
   });
 };
+
 
 const roomsPost = async (req = request, res = response) => {
   const tipos= ["SIMPLE","DOBLE","BUNGALOW_FAMILIAR"]
 
   const { number, type, price, availability, photo } = req.body;
-
-  //await
 
   if(!tipos.includes(type.toUpperCase())){
     return res.status(401).json({
@@ -33,17 +39,32 @@ const roomsPost = async (req = request, res = response) => {
   });
 }
 
-const roomsPut = (req = request, res = response) => {
+const roomsPut = async (req = request, res = response) => {
   const { id } = req.params;
-  res.json({
-    message: 'PUT rooms-controllers',
-    id,
+
+  const{_id, price, photo,...resto} = req.body
+
+  await Room.findByIdAndUpdate(id, resto)
+
+  res.status(200).json({
+    message: 'datos habitación actualizados',
+    resto,
   });
+
 };
 
-const roomsDelete = (req = request, res = response) => {
-  res.json({
-    message: 'DELETE rooms-controllers',
+const roomsDelete = async(req = request, res = response) => {
+const{id}= req.params
+
+//borrado fisico.
+//const roomBorrada = await Room.findByIdAndDelete(id)
+
+//inactivar un documento.
+await Room.findByIdAndUpdate(
+  id, {availability:false,}, {new:true})
+  
+res.status(200).json({
+    message: 'Rooms eliminada',
   });
 };
 
